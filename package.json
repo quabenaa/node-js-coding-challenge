@@ -7,11 +7,12 @@
     "test": "mocha --recursive"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.16.1",
     "express": "~4.11.1",
     "express-bearer-token": "^2.1.0",
     "hash": "^0.2.0",
-    "mongodb": "^2.2.24",
+    "mongodb": "^4.4.0",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
