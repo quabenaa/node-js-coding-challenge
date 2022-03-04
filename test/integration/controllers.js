@@ -112,7 +112,7 @@ describe('Profile controller', () => {
     return request(app).get('/api/profile').expect(401);
   });
 
-  it('returns 200 ok when unauthorised request is sent for logout', () => {
+  it('returns 200 ok when authorised request is sent for logout', () => {
     return request(app)
       .post('/api/logout')
       .set('Authorization', 'Bearer ' + _token)

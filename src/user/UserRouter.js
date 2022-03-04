@@ -1,5 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
 
 const TokenService = require('../auth/TokenService');
 const UserService = require('./UserService');
@@ -46,7 +45,8 @@ router.get('/api/profile', tokenAuthentication, async (req, res) => {
   return res.status(200).send({ email: req.authenticatedUser.email });
 });
 
-router.get('/api/logout', tokenAuthentication, async (req, res) => {
+router.post('/api/logout', tokenAuthentication, async (req, res) => {
+  await TokenService.deactivate(req.authenticatedUser);
   return res.status(200).send();
 });
 
