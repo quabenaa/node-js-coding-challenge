@@ -10,6 +10,10 @@ const verify = (token) => {
   return jwt.verify(token, jwtSecret);
 };
 
+const deleteToken = (token) => {
+  return;
+};
+
 module.exports = {
   createToken,
   verify,

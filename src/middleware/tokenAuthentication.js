@@ -1,11 +1,8 @@
-const UserService = require('../user/UserService');
 const TokenService = require('../auth/TokenService');
 
 const tokenAuthentication = async (req, res, next) => {
-  console.log(req);
-  const bearerHeader = req.headers['authorization'];
-  if (bearerHeader) {
-    const token = bearerHeader.substring(7);
+  if (req.headers && req.headers.authorization) {
+    const token = req.headers['authorization'].split(' ')[1];
     const user = await TokenService.verify(token);
     req.authenticatedUser = user;
   }

@@ -7,7 +7,6 @@ let app = require('../../app');
 let _user = 'integration_test_' + Math.floor(Date.now() / 1000) + '@alttab.co';
 
 describe('Authentication Controller', () => {
-
   it('should register a new user and return token', () => {
     let _token = null;
 
@@ -16,7 +15,7 @@ describe('Authentication Controller', () => {
       .send({
         email: _user,
         password: 'integration',
-        name: 'Integration Test'
+        name: 'Integration Test',
       })
       .expect(201)
       .then((data) => {
@@ -31,7 +30,7 @@ describe('Authentication Controller', () => {
       .post('/api/login')
       .send({
         email: _user,
-        password: 'integration'
+        password: 'integration',
       })
       .expect(200)
       .then((data) => {
@@ -40,40 +39,50 @@ describe('Authentication Controller', () => {
       });
   });
 
+  it('should fail to login for invalid User', () => {
+    let _token = null;
+    return request(app)
+      .post('/api/login')
+      .send({
+        email: _user,
+        password: 'wrong_integration',
+      })
+      .expect(401);
+  });
+
   it('should return an error bad request if email is used', () => {
     return request(app)
       .post('/api/register')
       .send({
         email: _user,
         password: 'integration',
-        name: 'Integration Test'
+        name: 'Integration Test',
       })
       .expect(400);
   });
 
-  it('should return an error bad request if email isn\'t specified', () => {
+  it("should return an error bad request if email isn't specified", () => {
     return request(app)
       .post('/api/register')
       .send({
         password: 'integration',
-        name: 'Integration Test'
+        name: 'Integration Test',
       })
       .expect(400);
   });
 
-  it('should return an error bad request if password isn\'t specified', () => {
+  it("should return an error bad request if password isn't specified", () => {
     return request(app)
       .post('/api/register')
       .send({
         email: _user,
-        name: 'Integration Test'
+        name: 'Integration Test',
       })
       .expect(400);
   });
 });
 
 describe('Profile controller', () => {
-
   let _token = null;
 
   before(() => {
@@ -81,7 +90,7 @@ describe('Profile controller', () => {
       .post('/api/login')
       .send({
         email: _user,
-        password: 'integration'
+        password: 'integration',
       })
       .then((data) => {
         _token = data.body.token;
@@ -100,8 +109,13 @@ describe('Profile controller', () => {
   });
 
   it('should return an error when token is not specified', () => {
+    return request(app).get('/api/profile').expect(401);
+  });
+
+  it('returns 200 ok when unauthorised request is sent for logout', () => {
     return request(app)
-      .get('/api/profile')
-      .expect(401);
+      .post('/api/logout')
+      .set('Authorization', 'Bearer ' + _token)
+      .expect(200);
   });
 });
