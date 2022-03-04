@@ -1,4 +1,4 @@
-const TokenService = require('../auth/TokenService');
+const TokenService = require('./TokenService');
 const UserService = require('../user/UserService');
 
 const login = async (req, res) => {
@@ -14,7 +14,7 @@ const login = async (req, res) => {
     return res.status(401).send('User does not exists');
   }
 
-  const token = TokenService.createToken(req.body.email);
+  const token = TokenService.createToken({ email: req.body.email, loginTime: Date.now() });
   return res.status(200).send({ token });
 };
 
@@ -23,4 +23,11 @@ const logout = async (req, res) => {
   return res.status(200).send();
 };
 
-module.exports = { login, logout };
+const register = async (req, res) => {
+  let user = { ...req.body };
+  await UserService.save(user);
+  const token = TokenService.createToken({ email: user.email, loginTime: Date.now() });
+  return res.status(201).send({ user, token });
+};
+
+module.exports = { login, logout, register };

@@ -4,8 +4,8 @@ const DeactivatedToken = require('./DeactivatedToken');
 
 const jwtSecret = 'coding-challenge';
 
-const createToken = (email) => {
-  return jwt.sign({ email }, jwtSecret);
+const createToken = (payload) => {
+  return jwt.sign({ ...payload }, jwtSecret);
 };
 
 const verify = (token) => {

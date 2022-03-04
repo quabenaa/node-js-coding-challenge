@@ -1,18 +1,14 @@
 const TokenService = require('../auth/TokenService');
 
-const tokenAuthentication = async (req, res, next) => {
-  if (req.headers && req.headers.authorization) {
-    const token = req.headers['authorization'].split(' ')[1];
-    const user = await TokenService.verify(token);
-
-    const isTokenDeactivated = await TokenService.findDeactivatedToken(user.email, token);
+module.exports = async (req, res, next) => {
+  if (req.get('authorization')) {
+    const token = req.get('authorization').split(' ')[1];
+    const payload = await TokenService.verify(token);
+    const isTokenDeactivated = await TokenService.findDeactivatedToken(payload.email, token);
     if (isTokenDeactivated) {
       next();
     }
-
-    req.authenticatedUser = { ...user, token };
+    req.authenticatedUser = { ...payload, token };
   }
   next();
 };
-
-module.exports = tokenAuthentication;

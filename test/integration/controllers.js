@@ -7,8 +7,10 @@ let app = require('../../src/app');
 let _user = 'integration_test_' + Math.floor(Date.now() / 1000) + '@alttab.co';
 
 describe('Authentication Controller', () => {
+  let _token = null;
+
   it('should register a new user and return token', () => {
-    let _token = null;
+    _token = null;
 
     return request(app)
       .post('/api/register')
@@ -25,7 +27,8 @@ describe('Authentication Controller', () => {
   });
 
   it('should login existing User', () => {
-    let _token = null;
+    _token = null;
+
     return request(app)
       .post('/api/login')
       .send({
@@ -39,8 +42,22 @@ describe('Authentication Controller', () => {
       });
   });
 
+  it('returns 200 ok when authorised request is sent for logout', () => {
+    return request(app)
+      .post('/api/logout')
+      .set('Authorization', 'Bearer ' + _token)
+      .expect(200);
+  });
+
+  it('returns 401 ok when deactivated token is specified', () => {
+    return request(app)
+      .get('/api/profile')
+      .set('Authorization', 'Bearer ' + _token)
+      .expect(401);
+  });
+
   it('should fail to login for invalid User', () => {
-    let _token = null;
+    _token = null;
     return request(app)
       .post('/api/login')
       .send({
@@ -110,19 +127,5 @@ describe('Profile controller', () => {
 
   it('should return an error when token is not specified', () => {
     return request(app).get('/api/profile').expect(401);
-  });
-
-  it('returns 200 ok when authorised request is sent for logout', () => {
-    return request(app)
-      .post('/api/logout')
-      .set('Authorization', 'Bearer ' + _token)
-      .expect(200);
-  });
-
-  it('returns 401 ok when deactivated token is specified', () => {
-    return request(app)
-      .get('/api/profile')
-      .set('Authorization', 'Bearer ' + _token)
-      .expect(401);
   });
 });

@@ -1,8 +1,8 @@
-const UserService = require('./UserService');
+const UserService = require('../user/UserService');
 
 const emailAlreadyExist = async (req, res, next) => {
-  const user = req.body;
-  const userExist = await UserService.findByEmail(user.email);
+  const { email } = req.body;
+  const userExist = await UserService.findByEmail(email);
 
   if (userExist) {
     return res.status(400).send({ message: 'The email is already used' });
