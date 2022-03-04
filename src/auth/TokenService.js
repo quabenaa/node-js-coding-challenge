@@ -9,8 +9,11 @@ const createToken = (email) => {
 };
 
 const verify = (token) => {
-  DeactivatedToken.
   return jwt.verify(token, jwtSecret);
+};
+
+const findDeactivatedToken = async (email, token) => {
+  return await DeactivatedToken.find({ email, token });
 };
 
 const deactivate = (user) => {
@@ -22,4 +25,5 @@ module.exports = {
   createToken,
   verify,
   deactivate,
+  findDeactivatedToken,
 };

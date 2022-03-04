@@ -118,4 +118,11 @@ describe('Profile controller', () => {
       .set('Authorization', 'Bearer ' + _token)
       .expect(200);
   });
+
+  it('returns 401 ok when deactivated token is specified', () => {
+    return request(app)
+      .get('/api/profile')
+      .set('Authorization', 'Bearer ' + _token)
+      .expect(401);
+  });
 });
