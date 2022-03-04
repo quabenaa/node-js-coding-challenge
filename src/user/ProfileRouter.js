@@ -1,11 +1,10 @@
 const express = require('express');
-const { check } = require('express-validator');
 
-const UserController = require('./UserController');
+const ProfileController = require('./ProfileController');
 const tokenAuthentication = require('../middleware/tokenAuthentication');
 
 const router = express.Router();
 
-router.get('/profile', tokenAuthentication, UserController.profile);
+router.get('/profile', tokenAuthentication, ProfileController.profile);
 
 module.exports = router;
