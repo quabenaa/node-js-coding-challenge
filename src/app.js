@@ -4,9 +4,9 @@ const express = require('express');
 
 var bodyParser = require('body-parser');
 
-const mongoDBConnection = require('./src/middleware/mongoDBConnection');
+const mongoDBConnection = require('./middleware/mongoDBConnection');
 
-const UserRouter = require('./src/user/UserRouter');
+const AppRouter = require('./AppRouter');
 
 const app = express();
 
@@ -14,8 +14,8 @@ app.set('port', 4489);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(mongoDBConnection);
+// app.use(mongoDBConnection);
 
-app.use(UserRouter);
+app.use(AppRouter);
 
 module.exports = app;

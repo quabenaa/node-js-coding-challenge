@@ -3,7 +3,7 @@
 let assert = require('chai').assert;
 let request = require('supertest-as-promised');
 
-let app = require('../../app');
+let app = require('../../src/app');
 let _user = 'integration_test_' + Math.floor(Date.now() / 1000) + '@alttab.co';
 
 describe('Authentication Controller', () => {
